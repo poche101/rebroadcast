@@ -1,0 +1,73 @@
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,500&family=Inter:wght@400;500;600;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  /* Fonts */
+  --font-serif: "Fraunces", ui-serif, Georgia, serif;
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+
+  /* Custom Color Palette */
+  --color-linen-50: #FBF8F2;
+  --color-linen-100: #F5EFE3;
+  --color-linen-200: #EBE1CC;
+
+  --color-stone-600: #8A7F6E;
+  --color-stone-700: #5C5347;
+  --color-stone-800: #3A342B;
+  --color-stone-900: #26221C;
+
+  --color-gold-400: #C9A45E;
+  --color-gold-500: #B8935A;
+  --color-gold-600: #9C7A45;
+
+  --color-slateblue-500: #5B7A8C;
+  --color-slateblue-600: #4A6575;
+
+  --color-navy-700: #2C4562;
+  --color-navy-800: #203350;
+  --color-navy-900: #16233A;
+
+  --color-olive-500: #7C8A5C;
+  --color-olive-600: #67744A;
+
+  /* Custom Shadows & Constraints */
+  --shadow-soft: 0 1px 2px rgba(38, 34, 28, 0.06), 0 8px 24px -12px rgba(38, 34, 28, 0.18);
+  --max-width-prose: 68ch;
+}
+
+/* Base Styles */
+@layer base {
+  body {
+    font-family: var(--font-sans);
+    background-color: var(--color-linen-50);
+    color: var(--color-stone-800);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  ::selection {
+    background-color: rgba(201, 164, 94, 0.3);
+  }
+
+  [x-cloak] {
+    display: none !important;
+}
+}
+
+/* Custom Component Utilities */
+@utility tab-btn {
+  padding: 0.75rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--color-stone-600);
+  border-bottom: 2px solid transparent;
+  transition: color 0.15s ease-in-out;
+
+  &:hover {
+    color: var(--color-stone-800);
+  }
+
+  &.is-active {
+    color: var(--color-stone-900);
+    border-color: var(--color-gold-500);
+  }
+}
