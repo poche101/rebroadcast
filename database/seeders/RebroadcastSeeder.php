@@ -24,28 +24,6 @@ class RebroadcastSeeder extends Seeder
             ['name' => 'Grace Adeyemi', 'password' => Hash::make('password'), 'role' => 'member']
         );
 
-        $active = Rebroadcast::create([
-            'video_url' => 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
-            'embed_url' => Rebroadcast::buildEmbed('https://www.youtube.com/watch?v=dQw4w9WgXcQ')['embed'],
-            'video_provider' => 'youtube',
-            'title' => 'Living in the Overflow',
-            'speaker' => 'Pastor Chris Oyakhilome',
-            'series' => 'Sunday Service',
-            'scripture_reference' => 'John 10:10',
-            'notes' => "God's desire for you goes beyond survival — He wants you living in abundance, in every area of your life.",
-            'status' => 'active',
-            'scheduled_at' => now()->subMinutes(20),
-        ]);
-
-        Rebroadcast::create([
-            'video_url' => 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
-            'embed_url' => Rebroadcast::buildEmbed('https://www.youtube.com/watch?v=dQw4w9WgXcQ')['embed'],
-            'video_provider' => 'youtube',
-            'title' => 'Midweek Communion Service',
-            'series' => 'Communion',
-            'status' => 'scheduled',
-            'scheduled_at' => now()->addDays(2)->setTime(18, 0),
-        ]);
 
         Rebroadcast::create([
             'video_url' => 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
@@ -70,18 +48,6 @@ class RebroadcastSeeder extends Seeder
             'status' => 'new',
         ]);
 
-        Comment::create([
-            'rebroadcast_id' => $active->id,
-            'user_id' => $member->id,
-            'body' => 'Glory! This word is exactly what I needed today.',
-        ]);
-
-        Comment::create([
-            'rebroadcast_id' => $active->id,
-            'user_id' => $admin->id,
-            'body' => 'So glad you\'re here with us, Grace — God bless you.',
-            'is_admin_comment' => true,
-        ]);
 
         RebroadcastParticipant::updateOrCreate(
             ['rebroadcast_id' => $active->id, 'user_id' => $member->id],
