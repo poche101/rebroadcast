@@ -68,11 +68,22 @@
             <div class="md:col-span-8">
                 <div class="relative w-full aspect-video rounded-lg overflow-hidden bg-navy-900 shadow-soft">
                     @if ($rebroadcast && $rebroadcast->status === 'active')
-                        <iframe src="{{ $rebroadcast->embed_url }}" class="absolute inset-0 w-full h-full"
-                            title="{{ $rebroadcast->title }}" frameborder="0"
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                            allowfullscreen>
-                        </iframe>
+                        @if ($rebroadcast->video_provider === 'direct')
+                            <video controls playsinline preload="metadata"
+                                controlsList="nodownload noremoteplayback"
+                                disablePictureInPicture
+                                oncontextmenu="return false;"
+                                class="absolute inset-0 w-full h-full bg-black"
+                                src="{{ $rebroadcast->video_url }}">
+                                Your browser can't play this video.
+                            </video>
+                        @else
+                            <iframe src="{{ $rebroadcast->embed_url }}" class="absolute inset-0 w-full h-full"
+                                title="{{ $rebroadcast->title }}" frameborder="0"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                allowfullscreen>
+                            </iframe>
+                        @endif
                     @elseif ($rebroadcast && $rebroadcast->status === 'scheduled')
                         <div x-data="countdown('{{ optional($rebroadcast->scheduled_at)->toIso8601String() }}')" x-init="tick();
                         setInterval(tick, 1000)"
@@ -166,7 +177,7 @@
                                         'body' => $c->body,
                                     ],
                                 ),
-                            ), @js($rebroadcast->id))">
+                            ), @js($rebroadcast?->id))">
                             <div class="space-y-3.5 mb-5">
                                 <template x-if="comments.length === 0">
                                     <p class="text-sm text-stone-500">No comments yet — be the first to say hello.</p>
