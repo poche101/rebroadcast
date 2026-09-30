@@ -26,7 +26,7 @@ class RebroadcastPublicController extends Controller
             ->limit(6)
             ->get();
 
-        $comments = $rebroadcast?->comments()->with('user')->limit(50)->get() ?? collect();
+        $comments = $rebroadcast?->comments()->whereNull('parent_id')->with(['user', 'replies.user'])->limit(50)->get() ?? collect();
         $participants = $rebroadcast?->activeParticipants() ?? collect();
 
         return view('rebroadcast.show', compact('rebroadcast', 'recentArchive', 'comments', 'participants'));

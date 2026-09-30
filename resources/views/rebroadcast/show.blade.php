@@ -175,6 +175,12 @@
                                         'is_admin' => (bool) $c->is_admin_comment,
                                         'time' => $c->created_at->diffForHumans(),
                                         'body' => $c->body,
+                                        'replies' => $c->replies->map(fn($r) => [
+                                            'name' => $r->user->name ?? 'A member',
+                                            'is_admin' => (bool) $r->is_admin_comment,
+                                            'time' => $r->created_at->diffForHumans(),
+                                            'body' => $r->body,
+                                        ]),
                                     ],
                                 ),
                             ), @js($rebroadcast?->id))">
@@ -192,6 +198,22 @@
                                             <span class="text-stone-400 text-xs ml-1.5" x-text="comment.time"></span>
                                         </p>
                                         <p class="text-sm text-stone-700" x-text="comment.body"></p>
+                                        <template x-if="comment.replies && comment.replies.length">
+                                            <div class="mt-2 pl-3 border-l-2 border-stone-200 space-y-2">
+                                                <template x-for="(reply, ri) in comment.replies" :key="ri">
+                                                    <div>
+                                                        <p class="text-sm">
+                                                            <span class="font-medium text-stone-900" x-text="reply.name"></span>
+                                                            <span x-show="reply.is_admin"
+                                                                class="ml-1 inline-flex text-[10px] font-medium uppercase tracking-wide rounded-full px-1.5 py-0.5 bg-gold-500/15 text-gold-600">Media
+                                                                team</span>
+                                                            <span class="text-stone-400 text-xs ml-1.5" x-text="reply.time"></span>
+                                                        </p>
+                                                        <p class="text-sm text-stone-700" x-text="reply.body"></p>
+                                                    </div>
+                                                </template>
+                                            </div>
+                                        </template>
                                     </div>
                                 </template>
                             </div>
@@ -393,6 +415,7 @@
                             is_admin: (data.comment && data.comment.is_admin_comment) || false,
                             time: 'just now',
                             body: this.draft,
+                            replies: [],
                         });
                         this.draft = '';
                     } catch (e) {
